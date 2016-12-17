@@ -1,5 +1,5 @@
 printData = function(students){
-  var s = students;
+    var s = students;
     var tbodyEl = $('tbody');
     tbodyEl.html('');
     s.forEach(function(student) {
@@ -17,32 +17,33 @@ printData = function(students){
     });
 };
 getData = function(){
+    var self = this;
+    self.response = [];
     jQuery.ajax({
         url: '/students',
         contentType: 'application/json',
         success: function(response) {
             printData(response.students);
-            console.log(response.students);
-            //return response.students;
+            self.response = response.students;
         }
     });
+    console.log(self.response);
 };
 
 deleteData = function(a){
     var id = a;
+    var self = this;
+    self.response = '';
     jQuery.ajax({
         url: '/students/' + id,
         method: 'DELETE',
         contentType: 'application/json',
         success: function(response) {
-            //console.log(response);
+            self.response = response;
             $('#get-button').click();
-
-            //res = response;
         }
     });
-    //console.log(res);
-    //return res;
+    console.log(self.respose);
 };
 updateDataHelper = function(a, b){
   jQuery.ajax({

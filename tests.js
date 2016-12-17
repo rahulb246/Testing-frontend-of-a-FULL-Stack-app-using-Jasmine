@@ -19,20 +19,17 @@ describe("tests for chekcing if required functions are defined", function() {
 
 });
 describe("tests for spying on events by using spyOnEvent", function() {
+
     it("getData should be called on click", function(){
       spyOnEvent($('#get-button'), 'click');
       $('#get-button').click();
       expect('click').toHaveBeenTriggeredOn($('#get-button'));
     });
 
-    /*it(" updateData() should be called on click", function(){
-      spyOnEvent($('#create-form'), 'click');
-      $('#get-button').click();
-      expect('click').toHaveBeenTriggeredOn($('#create-form'));
-    });*/
 
 });
 describe("tests for spying on functions by using spyOns", function() {
+
     it("getData should make a ajax HTTPrequest call", function() {
       spyOn(jQuery, "ajax");
       getData();
@@ -49,23 +46,42 @@ describe("tests for spying on functions by using spyOns", function() {
       spyOn(jQuery, "ajax");
       deleteData();
       expect(jQuery.ajax).toHaveBeenCalled();
-  });
+    });
+
+    it("deleteData should make a correct ajax HTTPrequest call", function() {
+      spyOn(jQuery, "ajax");
+      deleteData(4);
+
+      expect(jQuery.ajax).toHaveBeenCalledWith({
+          url: '/students/',
+          method: 'DELETE',
+          contentType: 'application/json',
+          success: function(response) {
+              $('#get-button').click();
+          }
+        });
+    });
+
 
 });
-describe("tests for checking responses", function() {
+describe("sample tests for checking responses", function() {
   var students = [
   {id: 1, name: 'Iron man', college: 'MIT'},
   {    id: 2,    name: 'Rahul',college: 'CBIT'},
   {    id: 3,    name: 'Messi',    college: 'CBIT'},
   {    id: 4,    name: 'Dybala',    college: 'Stanford'}];
-  /*it("success response from server for GET call should match", function() {
-    expect(getData().toEqual(students);
-  });
-  /*it("success response from server for POST call should match", function() {
-    expect(updateDataHelper('name','college')).toEqual('Successfully created product!');
+
+  it("success response from server for GET call should match", function() {
+    spyOn(console, "log");
+    getData();
+    expect(console.log).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith(students);
   });
 
   it("success response from server for DELETE call should match", function() {
-    expect(deleteData(3)).toEqual('Successfully deleted product!');
-  });*/
+    spyOn(console, "log");
+    deleteData(4);
+    expect(console.log).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('Successfully deleted product!');
+  });
 });
